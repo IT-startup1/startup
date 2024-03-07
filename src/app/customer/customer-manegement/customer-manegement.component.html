@@ -1,0 +1,98 @@
+<div class="right-align mt-2 me-2">
+  <button class="btn btn-secondary m-2 btn-sm" (click)="openAddEditModal(null)"><i class="typcn typcn-pencil"></i>Add Customer</button>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover table-striped table-bordered">
+    <thead>
+      <tr>
+        <th><b>#</b></th>
+        <th><b>Customer Name</b></th>
+        <th><b>Mobile No.</b></th>
+        <th><b>Email</b></th>
+        <th><b>Address</b></th>
+        <th><b>Action</b></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of customerDetails">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.mobile}}</td>
+        <td>{{item.email}}</td>
+        <td>{{item.address}}</td>
+        <td>
+          <button type="button" class="btn btn-primary btn-icon btn-sm" (click)="openAddEditModal(item)">
+            <i class="typcn typcn-pencil"></i>
+          </button>
+
+          <button (click)="onDeleteCustomer(item)" type="button" class="btn btn-outline-danger btn-icon btn-sm" style="margin-left: 10px;">
+            <i class="typcn typcn-trash"></i>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="this.utilsService.isEmptyObjectOrNullUndefined(customerDetails)">
+        <td colspan="20" class="text-center">
+          <span
+            class="truncate"><b>No Record Found.</b></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="customerAddEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="exampleModalLabel">Customer Details</h3>
+        <a class="btn-icon" data-bs-dismiss="modal" aria-label="Close">
+          <i class="mdi mdi-close-box"></i>
+        </a>
+      </div>
+      <div class="modal-body">
+        <form class="forms-sample" [formGroup]="customerFormGroup">
+          <div class="form-group">
+            <label for="exampleInputProduct">Customer Name</label>
+            <input type="text" class="form-control form-control-sm" id="exampleInputProduct" placeholder="Customer Name" [(ngModel)]="customerObj.name"
+              autocomplete="off" formControlName="name" [maxlength]="30">
+            <span
+              *ngIf="customerFormGroup.controls['name'].hasError('required') &&  customerFormGroup.controls['name'].touched"
+              class="text-danger">Customer Name is required!
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPrice">Mobile No.</label>
+            <input type="text" class="form-control form-control-sm" id="exampleInputPrice" placeholder="Mobile No" [(ngModel)]="customerObj.mobile"
+              autocomplete="off" formControlName="mobile" [maxlength]="12">
+            <span
+              *ngIf="customerFormGroup.controls['mobile'].hasError('required') &&  customerFormGroup.controls['mobile'].touched"
+              class="text-danger">Mobile No. is required!
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPrice">Email.</label>
+            <input type="text" class="form-control form-control-sm" id="exampleInputPrice" placeholder="Email" [(ngModel)]="customerObj.email"
+              autocomplete="off" formControlName="email" [maxlength]="30">
+            <span
+              *ngIf="customerFormGroup.controls['email'].hasError('required') &&  customerFormGroup.controls['email'].touched"
+              class="text-danger">Email is required!
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputTax">Address</label>
+            <input type="text" class="form-control form-control-sm" id="exampleInputTax" placeholder="Address" autocomplete="off" [(ngModel)]="customerObj.address"
+              formControlName="address" [maxlength]="50">
+            <span *ngIf="customerFormGroup.controls['address'].hasError('required') &&  customerFormGroup.controls['address'].touched"
+              class="text-danger">Address is required!
+            </span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" (click)="onSaveCustomer()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
